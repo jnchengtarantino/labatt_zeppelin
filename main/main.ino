@@ -13,44 +13,25 @@
 #define BLUE_BUT 8
 #define ORANGE_BUT 12
 #define STRUM 13
-#define PUMP 11
-#define SPEAKER 9
+#define PUMP 9
+#define SPEAKER 11
 
-#define  c3    7634
-#define  d3    6803
-#define  e3    6061
-#define  f3    5714
-#define  g3    5102
-#define  a3    4545
-#define  b3    4049
-#define  c4    3816    // 261 Hz 
-#define  d4    3401    // 294 Hz 
-#define  e4    3030    // 329 Hz 
-#define  f4    2865    // 349 Hz 
-#define  g4    2551    // 392 Hz 
-#define  a4    2272    // 440 Hz 
-#define  a4s   2146
-#define  b4    2028    // 493 Hz 
-#define  c5    1912    // 523 Hz
-#define  d5    1706
-#define  d5s   1608
-#define  e5    1517    // 659 Hz
-#define  f5    1433    // 698 Hz
-#define  g5    1276
-#define  a5    1136
-#define  a5s   1073
-#define  b5    1012
-#define  c6    955
- 
-#define  R     0      // Rest
+#define NOTE_C4  262  
+#define NOTE_D4  294
+#define NOTE_E4  330
+#define NOTE_F4  349
+#define NOTE_G4  392
+#define NOTE_A4  440
+#define NOTE_B4  494
+#define NOTE_C5  523
+#define NOTE_D5  587
+#define NOTE_E5  659
+#define NOTE_F5  698
+#define NOTE_G5  784
+#define NOTE_A5  880
+#define NOTE_B5  988
 
-// Melody 1: Star Wars Theme
-int melody1[] = {  f4,  f4, f4,  a4s,   f5,  d5s,  d5,  c5, a5s, f5, d5s,  d5,  c5, a5s, f5, d5s, d5, d5s, c5};
-int beats1[]  = {  21,  21, 21,  128,  128,   21,  21,  21, 128, 64,  21,  21,  21, 128, 64,  21, 21,  21, 128}; 
-
-long tempo = 10000; // Set overall tempo
-int pause = 1000; // Set length of pause between notes
-int rest_count = 50; // Loop variable to increase Rest length (BLETCHEROUS HACK; See NOTES)
+const int songSpeed = 1.5;
 
 // Define the array of leds
 CRGB leds[NUM_LEDS];
@@ -82,7 +63,8 @@ void setup() {
   pinMode(PUMP, OUTPUT);
   pinMode(SPEAKER, OUTPUT);
 
-  playMelody();
+  playSong();
+  while (true) ;
 }
 
 void loop() {
@@ -131,7 +113,7 @@ void show_LED(bool arr[5])
    if(i=12)
   {
     //verify if guitar note was played
-     drink(guitar_check(arr[5]);
+    // drink(guitar_check(arr[5]);
   }
  
   //reset all to black
@@ -260,39 +242,119 @@ void show_orange()
   }
 }
 
-void playTone(int toneM, int beat, long duration) {
-  long elapsed_time = 0;
-  if (toneM > 0) { // if this isn't a Rest beat, while the tone has 
-    //  played less long than 'duration', pulse speaker HIGH and LOW
-    while (elapsed_time < duration) {
- 
-      digitalWrite(SPEAKER,HIGH);
-      delayMicroseconds(toneM / 2);
- 
-      // DOWN
-      digitalWrite(SPEAKER, LOW);
-      delayMicroseconds(toneM / 2);
- 
-      // Keep track of how long we pulsed
-      elapsed_time += (toneM);
-    } 
-  }
-  else { // Rest beat; loop times delay
-    for (int j = 0; j < rest_count; j++) { // See NOTE on rest_count
-      delayMicroseconds(duration);  
-    }                                
-  }                                 
-}
+int duration[] = {         //duration of each note (in ms) Quarter Note is set to 250 ms
+  125, 125, 250, 125, 125, 
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 125, 
+  
+  125, 125, 250, 125, 125, 
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 125, 
+  
+  125, 125, 250, 125, 125, 
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 125, 250, 125,
 
-void playMelody() {
-    for (int i=0; i<(sizeof(melody1)/sizeof(int)); i++) {
-      int toneM = melody1[i];
-      int beat = beats1[i];
- 
-      long duration = beat * tempo; // Set up timing
- 
-      playTone(toneM, beat, duration); // A pause between notes
-      delayMicroseconds(pause);
-    }
+  125, 125, 250, 125, 125, 
+  250, 125, 250, 125, 
+  125, 125, 250, 125, 125,
+  125, 125, 375, 375,
+
+  250, 125,
+  //Rpeat of First Part
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 125, 
+  
+  125, 125, 250, 125, 125, 
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 375, 125, 
+  
+  125, 125, 250, 125, 125, 
+  125, 125, 250, 125, 125,
+  125, 125, 250, 125, 125,
+  125, 125, 125, 250, 125,
+
+  125, 125, 250, 125, 125, 
+  250, 125, 250, 125, 
+  125, 125, 250, 125, 125,
+  125, 125, 375, 375,
+  //End of Repeat
+  
+  250, 125, 375, 250, 125, 375,
+  125, 125, 125, 125, 125, 125, 125, 125, 375,
+  250, 125, 375, 250, 125, 375,
+  125, 125, 125, 125, 125, 500,
+
+  250, 125, 375, 250, 125, 375,
+  125, 125, 125, 125, 125, 125, 125, 125, 375,
+  250, 125, 375, 250, 125, 375,
+  125, 125, 125, 125, 125, 500
+};
+
+int notes[] = {       //Note of the song, 0 is a rest/pulse
+   NOTE_E4, NOTE_G4, NOTE_A4, NOTE_A4, 0, 
+   NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, 0, 
+   NOTE_C5, NOTE_D5, NOTE_B4, NOTE_B4, 0,
+   NOTE_A4, NOTE_G4, NOTE_A4, 0,
+   
+   NOTE_E4, NOTE_G4, NOTE_A4, NOTE_A4, 0, 
+   NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, 0, 
+   NOTE_C5, NOTE_D5, NOTE_B4, NOTE_B4, 0,
+   NOTE_A4, NOTE_G4, NOTE_A4, 0,
+   
+   NOTE_E4, NOTE_G4, NOTE_A4, NOTE_A4, 0, 
+   NOTE_A4, NOTE_C5, NOTE_D5, NOTE_D5, 0, 
+   NOTE_D5, NOTE_E5, NOTE_F5, NOTE_F5, 0,
+   NOTE_E5, NOTE_D5, NOTE_E5, NOTE_A4, 0,
+   
+   NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, 0, 
+   NOTE_D5, NOTE_E5, NOTE_A4, 0, 
+   NOTE_A4, NOTE_C5, NOTE_B4, NOTE_B4, 0,
+   NOTE_C5, NOTE_A4, NOTE_B4, 0,
+
+   NOTE_A4, NOTE_A4, 
+   //Repeat of first part
+   NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, 0, 
+   NOTE_C5, NOTE_D5, NOTE_B4, NOTE_B4, 0,
+   NOTE_A4, NOTE_G4, NOTE_A4, 0,
+
+   NOTE_E4, NOTE_G4, NOTE_A4, NOTE_A4, 0, 
+   NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, 0, 
+   NOTE_C5, NOTE_D5, NOTE_B4, NOTE_B4, 0,
+   NOTE_A4, NOTE_G4, NOTE_A4, 0,
+   
+   NOTE_E4, NOTE_G4, NOTE_A4, NOTE_A4, 0, 
+   NOTE_A4, NOTE_C5, NOTE_D5, NOTE_D5, 0, 
+   NOTE_D5, NOTE_E5, NOTE_F5, NOTE_F5, 0,
+   NOTE_E5, NOTE_D5, NOTE_E5, NOTE_A4, 0,
+   
+   NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, 0, 
+   NOTE_D5, NOTE_E5, NOTE_A4, 0, 
+   NOTE_A4, NOTE_C5, NOTE_B4, NOTE_B4, 0,
+   NOTE_C5, NOTE_A4, NOTE_B4, 0,
+   //End of Repeat
+
+   NOTE_E5, 0, 0, NOTE_F5, 0, 0,
+   NOTE_E5, NOTE_E5, 0, NOTE_G5, 0, NOTE_E5, NOTE_D5, 0, 0,
+   NOTE_D5, 0, 0, NOTE_C5, 0, 0,
+   NOTE_B4, NOTE_C5, 0, NOTE_B4, 0, NOTE_A4,
+
+   NOTE_E5, 0, 0, NOTE_F5, 0, 0,
+   NOTE_E5, NOTE_E5, 0, NOTE_G5, 0, NOTE_E5, NOTE_D5, 0, 0,
+   NOTE_D5, 0, 0, NOTE_C5, 0, 0,
+   NOTE_B4, NOTE_C5, 0, NOTE_B4, 0, NOTE_A4
+};
+
+void playSong() {
+  for (int i=0;i<203;i++){              //203 is the total number of music notes in the song
+    int wait = duration[i] * songSpeed;
+    tone(SPEAKER,notes[i],wait);          //tone(pin,frequency,duration)
+    delay(wait);
+  } 
 }
 
