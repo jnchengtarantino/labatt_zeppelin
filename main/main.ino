@@ -371,7 +371,19 @@ int notes2[] = {
   NOTE_As4, NOTE_Ds4, NOTE_Ds4, NOTE_Ds4, NOTE_Fs4, NOTE_Fs4, NOTE_Fs4,
   NOTE_Gs4, NOTE_As4, NOTE_Gs4, NOTE_Fs4, NOTE_Ds4,
   NOTE_Gs4, NOTE_C4, NOTE_C4, NOTE_C4, NOTE_Ds4, NOTE_Ds4, NOTE_Ds4,
-  NOTE_As3, NOTE_Ds4, NOTE_Fs4, NOTE_Ds4, NOTE_Cs4
+  NOTE_As3, NOTE_Ds4, NOTE_Fs4, NOTE_Ds4, NOTE_Cs4,
+  NOTE_Cs5, NOTE_Cs5, NOTE_As4, NOTE_As4, NOTE_As4, NOTE_Cs5, NOTE_Cs5, NOTE_Cs5,
+  NOTE_Gs4, NOTE_Gs4, NOTE_Ds5, NOTE_Ds5, NOTE_Ds5, NOTE_Fs5,
+
+  //repeat melody
+  NOTE_As4, NOTE_Ds4, NOTE_Ds4, NOTE_Ds4, NOTE_Fs4, NOTE_Fs4, NOTE_Fs4,
+  NOTE_Gs4, NOTE_As4, NOTE_Gs4, NOTE_Fs4, NOTE_Ds4,
+  NOTE_As4, NOTE_Ds4, NOTE_Ds4, NOTE_Ds4, NOTE_Fs4, NOTE_Fs4, NOTE_Fs4,
+  NOTE_Gs4, NOTE_As4, NOTE_Gs4, NOTE_Fs4, NOTE_Ds4,
+  NOTE_Gs4, NOTE_C4, NOTE_C4, NOTE_C4, NOTE_Ds4, NOTE_Ds4, NOTE_Ds4,
+  NOTE_As3, NOTE_Ds4, NOTE_Fs4, NOTE_Ds4, NOTE_Cs4,
+  NOTE_Cs5, NOTE_Cs5, NOTE_As4, NOTE_As4, NOTE_As4, NOTE_Cs5, NOTE_Cs5, NOTE_Cs5,
+  NOTE_Gs4, NOTE_Gs4, NOTE_Ds5, NOTE_Ds5, NOTE_Ds5, NOTE_Fs5
 };
 
 const int quick = 75;
@@ -392,7 +404,19 @@ int duration2[] = {
   longnote, quick, quick, quick, quick, quick, quick,
   half, half, quarter, quick2, half,
   longnote, quick, quick, quick, quick, quick, quick,
-  half, half, quarter, quick2, half
+  half, half, quarter, quick2, half,
+  half, half, quick, quick, quick, quick, quick, quick,
+  half, half, quick, quick, quick, half,
+
+  //repeat melody
+  longnote, quick, quick, quick, quick, quick, quick,
+  half, half, quarter, quick2, half,
+  longnote, quick, quick, quick, quick, quick, quick,
+  half, half, quarter, quick2, half,
+  longnote, quick, quick, quick, quick, quick, quick,
+  half, half, quarter, quick2, half,
+  half, half, quick, quick, quick, quick, quick, quick,
+  half, half, quick, quick, quick, half
 };
 
 void playSong() {
