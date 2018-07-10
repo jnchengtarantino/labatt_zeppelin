@@ -46,14 +46,15 @@
 
 // Define the array of leds
 CRGB leds[NUM_LEDS];
+bool correct_note = false;
 
 //arrays to determine which row to light up
-bool note_all[5]={true,true,true,true,true};
-bool note_A[5]={true,false, false, false, false};
-bool note_B[5]={false, true, false, false, false};
-bool note_C[5]={false, false, true, false, false};
-bool note_D[5]={false, false, false, true, false};
-bool note_E[5]={false, false, false, false, true};
+bool note[5]={false,false,false,false,false};
+//bool note_A[5]={true,false, false, false, false};
+//bool note_B[5]={false, true, false, false, false};
+//bool note_C[5]={false, false, true, false, false};
+//bool note_D[5]={false, false, false, true, false};
+//bool note_E[5]={false, false, false, false, true};
 
 //colours in hex RED = 0x00FF00 BLUE = 0x0000FF GREEN = 0xFF0000 ORANGE = 0x35FF00 YELLOW = 0xA0FF00 BLACK = 0x000000
 
@@ -64,18 +65,19 @@ void setup() {
   // NOTE: LEDs are not orderd in RGB, they are acting as GRB
   // Colour selection should be done in hex 0xGGRRBB
 
+  Serial.begin(9600);
+
   FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);
-  pinMode(GREEN_BUT, INPUT);
-  pinMode(RED_BUT, INPUT);
-  pinMode(YELLOW_BUT, INPUT);
-  pinMode(BLUE_BUT, INPUT);
-  pinMode(ORANGE_BUT, INPUT);
-  pinMode(STRUM, INPUT);
+  pinMode(GREEN_BUT, INPUT_PULLUP);
+  pinMode(RED_BUT, INPUT_PULLUP);
+  pinMode(YELLOW_BUT, INPUT_PULLUP);
+  pinMode(BLUE_BUT, INPUT_PULLUP);
+  pinMode(ORANGE_BUT, INPUT_PULLUP);
+  pinMode(STRUM, INPUT_PULLUP);
   pinMode(PUMP, OUTPUT);
   pinMode(SPEAKER, OUTPUT);
 
-  playSong();
-  while (true) ;
+  
 }
 
 void loop() {
@@ -86,101 +88,110 @@ void loop() {
   show_yellow();
   show_blue();
   show_orange();*/
- 
-  show_LED(note_all);
-  show_LED(note_A);
-  show_LED(note_C);
+  
+  playSong();
 }
 
 //lights up rows
-void show_LED(bool arr[5])
+void show_LED(bool arr[5], int note_length)
 {
+  bool temp = false;
+  note_length = note_length / 13;
   //check if rows grybo are expected on from bool array
-  for(int i=0; i<13; i++)
-  {
-    if(arr[0]==true){
-    leds[i]=0xFF0000; //assign 0-12 to green
-  }
-  if(arr[1]==true)
-  {
-    leds[i+13]=0x00FF00; //assign 13-25 to red
-  }
-  if(arr[2]==true)
-  {
-    leds[i+26]=0xA0FF00; //assign 26-38 to yellow
-  }
-  if(arr[3]==true)
-  {
-    leds[i+39]=0x0000FF; //assign 39-51 to blue
-  }
-  if(arr[4]==true)
-  {
-    leds[i+52]=0x35FF00; //assign 52-64 orange
-  }
-  FastLED.show(); //turn lights on
-  
-  delay(100);
 
-   if(i=12)
-  {
-    //verify if guitar note was played
-    drink(guitar_check(arr[5]);
-  }
- 
-  //reset all to black
-  for(int i=0; i<65; i++)
-  {
-    leds[i]=0x000000;
-  }
-  FastLED.show();
-  }
+  //check buttons, if played correctly once then don't update
+  temp = guitar_check();
+  
+  for(int i=12; i>=0; i--)
+   {
+      if(arr[0]==true){
+        leds[i]=0xFF0000; //assign 0-12 to green
+      }
+      if(arr[1]==true)
+      {
+        leds[i+13]=0x00FF00; //assign 13-25 to red
+      }
+      if(arr[2]==true)
+      {
+        leds[i+26]=0xA0FF00; //assign 26-38 to yellow
+      }
+      if(arr[3]==true)
+      {
+        leds[i+39]=0x0000FF; //assign 39-51 to blue
+      }
+      if(arr[4]==true)
+      {
+        leds[i+52]=0x35FF00; //assign 52-64 orange
+      }
+      FastLED.show(); //turn lights on
+      
+      //check buttons
+      if(temp != true)
+        temp = guitar_check();
+        
+      //delay 1/13 of note length to update leds  
+      delay(note_length);
+      //reset all to black
+      for(int i=0; i<65; i++)
+      {
+        leds[i]=0x000000;
+      }
+      FastLED.show();
+   }
+   correct_note = temp; 
 }
 
 //pump on
-void drink(bool note_played)
+void drink()
 {
-  //1 ms to play note
-  delay(100);
-
   //check if the argument is false, and if it is, drink up bitch
-  if(!note_played)
+  if(correct_note == false)
     {
       digitalWrite(PUMP, HIGH);
     }
-  delay(30);
-  digitalWrite(PUMP, LOW);
+   if(correct_note == true)
+   {
+      digitalWrite(PUMP, LOW);
+   }
+  
 }
 
 //check if buttons pressed
-bool guitar_check(bool note[5])
+bool guitar_check()
 {
   bool temp[5];
-  bool flag;
-  temp[0]= button_check(GREEN_BUT);
-  temp[1]= button_check(RED_BUT);
-  temp[2]= button_check(YELLOW_BUT);
-  temp[3]= button_check(BLUE_BUT);
-  temp[4]= button_check(ORANGE_BUT);
+  bool flag = true;
+  temp[0]= but_check(GREEN_BUT);
+  temp[1]= but_check(RED_BUT);
+  temp[2]= but_check(YELLOW_BUT);
+  temp[3]= but_check(BLUE_BUT);
+  temp[4]= but_check(ORANGE_BUT);
 
   for(int i=0; i<5; i++)
   {
-    if(temp[i]==note[i] && button_check(STRUM))
+    if(temp[i]==note[i])  //strum to be added
       flag = true;
-    else flag = false;
+    else if(temp[i]!= note[i])
+    {
+      flag = false;
+      break;
+    }
+      
   }
   return flag;
 }
 
-
 //button return
-bool button_check(int button)
+bool but_check(int button)
 {
-  if(button==HIGH)
+  if(digitalRead(button)==LOW)
     return true;
-  else
+  if(digitalRead(button)==HIGH)
     return false;
 }
 
+
+/*
 void show_red()
 {
   //chain leds in red row
@@ -251,7 +262,7 @@ void show_orange()
       FastLED.show();
   
   }
-}
+}*/
 
 int notes2[] = { 
   NOTE_Gs5, NOTE_Gs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5,
@@ -315,7 +326,38 @@ void playSong() {
   for (int i=0;i<(sizeof(duration2)/sizeof(int));i++){              //203 is the total number of music notes in the song
     int wait = duration2[i] * songSpeed;
     tone(SPEAKER,notes2[i],wait);          //tone(pin,frequency,duration)
-    delay(wait);
+    updateNote(notes2[i]);
+    show_LED(note, wait);
+    resetNote();
+    
+    //drink up at end of note
+    drink();
   } 
+}
+
+void updateNote(int frequency){
+  if(frequency <= 270)
+    note[0]=true;
+  if(250<frequency && frequency<=300)
+    note[2]=true;
+  if(290<frequency && frequency<=360)
+    note[3]=true;
+  if(330<frequency && frequency<=450)
+    note[1]=true;
+  if(420<frequency && frequency<=600)
+    note[4]=true;
+  if(570<frequency && frequency<=750)
+    note[2]=true;
+  if(700<frequency && frequency<=850)
+    note[0]=true;
+  if(800<frequency)
+    note[4]=true;
+}
+
+void resetNote(){
+  for(int i =0; i < 5; i++)
+  {
+    note[i]=false;
+  }
 }
 
