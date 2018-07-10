@@ -30,8 +30,19 @@
 #define NOTE_G5  784
 #define NOTE_A5  880
 #define NOTE_B5  988
-
-const int songSpeed = 1.5;
+#define NOTE_Gs5 831
+#define NOTE_Fs5 740
+#define NOTE_Cs6 1109 
+#define NOTE_As4 466
+#define NOTE_Ds4 311
+#define NOTE_Fs4 370
+#define NOTE_Gs4 415
+#define NOTE_C4  262
+#define NOTE_Cs4 277
+#define NOTE_As3 233
+#define NOTE_Cs5 554
+#define NOTE_Ds5 622
+#define NOTE_Fs5 740
 
 // Define the array of leds
 CRGB leds[NUM_LEDS];
@@ -350,10 +361,44 @@ int notes[] = {       //Note of the song, 0 is a rest/pulse
    NOTE_B4, NOTE_C5, 0, NOTE_B4, 0, NOTE_A4
 };
 
+int notes2[] = { 
+  NOTE_Gs5, NOTE_Gs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5,
+  NOTE_Gs5, NOTE_Gs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5,
+  NOTE_Gs5, NOTE_Gs5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5,
+  NOTE_Cs6, NOTE_Cs6, NOTE_Cs6, NOTE_Cs6, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5,
+  NOTE_As4, NOTE_Ds4, NOTE_Ds4, NOTE_Ds4, NOTE_Fs4, NOTE_Fs4, NOTE_Fs4,
+  NOTE_Gs4, NOTE_As4, NOTE_Gs4, NOTE_Fs4, NOTE_Ds4,
+  NOTE_As4, NOTE_Ds4, NOTE_Ds4, NOTE_Ds4, NOTE_Fs4, NOTE_Fs4, NOTE_Fs4,
+  NOTE_Gs4, NOTE_As4, NOTE_Gs4, NOTE_Fs4, NOTE_Ds4,
+  NOTE_Gs4, NOTE_C4, NOTE_C4, NOTE_C4, NOTE_Ds4, NOTE_Ds4, NOTE_Ds4,
+  NOTE_As3, NOTE_Ds4, NOTE_Fs4, NOTE_Ds4, NOTE_Cs4
+};
+
+const int quick = 75;
+const int quick2 = 100;
+const int quarter = 125;
+const int half = 250;
+const int full = 375;
+const int longnote = 500;
+const int songSpeed = 2;
+
+int duration2[] = {
+  half, half, half, half, half, half, half, half,
+  half, half, half, half, half, half, half, half,
+  half, half, half, half, half, half, half, half, half, half,
+  half, half, half, half, half, half, half, half,
+  longnote, quick, quick, quick, quick, quick, quick,
+  half, half, quarter, quick2, half,
+  longnote, quick, quick, quick, quick, quick, quick,
+  half, half, quarter, quick2, half,
+  longnote, quick, quick, quick, quick, quick, quick,
+  half, half, quarter, quick2, half
+};
+
 void playSong() {
-  for (int i=0;i<203;i++){              //203 is the total number of music notes in the song
-    int wait = duration[i] * songSpeed;
-    tone(SPEAKER,notes[i],wait);          //tone(pin,frequency,duration)
+  for (int i=0;i<(sizeof(duration2)/sizeof(int));i++){              //203 is the total number of music notes in the song
+    int wait = duration2[i] * songSpeed;
+    tone(SPEAKER,notes2[i],wait);          //tone(pin,frequency,duration)
     delay(wait);
   } 
 }
