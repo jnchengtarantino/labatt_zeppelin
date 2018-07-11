@@ -265,8 +265,7 @@ void show_orange()
 }*/
 
 int notes2[] = { 
-  NOTE_Gs5, NOTE_Gs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5,
-  NOTE_Gs5, NOTE_Gs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5,
+  NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5, NOTE_Fs5,
   NOTE_Gs5, NOTE_Gs5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5,
   NOTE_Cs6, NOTE_Cs6, NOTE_Cs6, NOTE_Cs6, NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5,
   NOTE_As4, NOTE_Ds4, NOTE_Ds4, NOTE_Ds4, NOTE_Fs4, NOTE_Fs4, NOTE_Fs4,
@@ -298,8 +297,7 @@ const int longnote = 500;
 const int songSpeed = 2;
 
 int duration2[] = {
-  half, half, half, half, half, half, half, half,
-  half, half, half, half, half, half, half, half,
+  half, half, half, half, half, half,
   half, half, half, half, half, half, half, half, half, half,
   half, half, half, half, half, half, half, half,
   longnote, quick, quick, quick, quick, quick, quick,
